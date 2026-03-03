@@ -1,20 +1,51 @@
-import { useSelector } from '../../services/store';
+import { useEffect } from 'react';
+import { BurgerIngredients } from '../../components/burger-ingredients';
+import { BurgerConstructor } from '../../components/burger-constructor';
+import { Preloader } from '../../components/ui/preloader';
+import { fetchIngredients } from '../../services/slices/ingredientsSlice';
+import { useAppDispatch, useAppSelector } from '../../services/store';
 
-import styles from './constructor-page.module.css';
+export const ConstructorPage = () => {
+  const dispatch = useAppDispatch();
+  const { items: ingredients, loading, error } = useAppSelector(
+    (state) => state.ingredients
+  );
 
-import { BurgerIngredients } from '../../components';
-import { BurgerConstructor } from '../../components';
-import { Preloader } from '../../components/ui';
-import { FC } from 'react';
+  useEffect(() => {
+    dispatch(fetchIngredients());
+  }, [dispatch]);
 
-export const ConstructorPage: FC = () => (
-  <main className={styles.containerMain}>
-    <h1 className={`${styles.title} text text_type_main-large mt-10 mb-5 pl-5`}>
-      Соберите бургер
-    </h1>
-    <div className={`${styles.main} pl-5 pr-5`}>
-      <BurgerIngredients />
-      <BurgerConstructor />
+  if (loading) {
+    return <Preloader />;
+  }
+
+  if (error) {
+    return (
+      <div className='text text_type_main-medium pt-10' style={{ color: 'red' }}>
+        {error}
+      </div>
+    );
+  }
+
+  if (!ingredients.length) {
+    return (
+      <div className='text text_type_main-medium pt-10'>
+        Нет ингредиентов
+      </div>
+    );
+  }
+
+  return (
+    <div style={{ maxWidth: '1240px', margin: '0 auto', width: '100%' }}>
+      <h1 className='text text_type_main-large pt-10 pb-5'>Соберите бургер</h1>
+      <div style={{ display: 'flex', gap: '40px' }}>
+        <div style={{ flex: '1', maxWidth: '600px' }}>
+          <BurgerIngredients />
+        </div>
+        <div style={{ flex: '1', maxWidth: '600px' }}>
+          <BurgerConstructor />
+        </div>
+      </div>
     </div>
-  </main>
-);
+  );
+};
