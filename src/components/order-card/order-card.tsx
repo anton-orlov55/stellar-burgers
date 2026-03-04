@@ -1,19 +1,19 @@
 import { FC, memo, useMemo } from 'react';
-import { useLocation } from 'react-router-dom';
-
+import { useLocation, useNavigate } from 'react-router-dom';
 import { OrderCardProps } from './type';
 import { TIngredient } from '@utils-types';
 import { OrderCardUI } from '../ui/order-card';
+import { useAppSelector } from '../../services/store';
 
 const maxIngredients = 6;
 
 export const OrderCard: FC<OrderCardProps> = memo(({ order }) => {
   const location = useLocation();
-
-  /** TODO: взять переменную из стора */
-  const ingredients: TIngredient[] = [];
+  const navigate = useNavigate();
+  const ingredients = useAppSelector((state) => state.ingredients.items);
 
   const orderInfo = useMemo(() => {
+    console.log('orderInfo:', orderInfo);
     if (!ingredients.length) return null;
 
     const ingredientsInfo = order.ingredients.reduce(
@@ -45,13 +45,21 @@ export const OrderCard: FC<OrderCardProps> = memo(({ order }) => {
     };
   }, [order, ingredients]);
 
+  const handleClick = () => {
+    navigate(`/feed/${order.number}`, {
+      state: { background: location }
+    });
+  };
+
   if (!orderInfo) return null;
 
   return (
-    <OrderCardUI
-      orderInfo={orderInfo}
-      maxIngredients={maxIngredients}
-      locationState={{ background: location }}
-    />
+    <div onClick={handleClick} style={{ cursor: 'pointer' }}>
+      <OrderCardUI
+        orderInfo={orderInfo}
+        maxIngredients={maxIngredients}
+        locationState={{ background: location }}
+      />
+    </div>
   );
 });
