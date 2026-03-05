@@ -17,7 +17,9 @@ export const Register: FC = () => {
     setError('');
 
     try {
-      await dispatch(registerUser({ name: userName, email, password })).unwrap();
+      await dispatch(
+        registerUser({ name: userName, email, password })
+      ).unwrap();
       navigate('/');
     } catch (err) {
       setError('Ошибка регистрации. Возможно, пользователь уже существует.');

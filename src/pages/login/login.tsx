@@ -14,7 +14,7 @@ export const Login: FC = () => {
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
     setError('');
-    
+
     try {
       await dispatch(loginUser({ email, password })).unwrap();
       navigate('/');

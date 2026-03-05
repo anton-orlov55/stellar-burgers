@@ -9,8 +9,11 @@ export const Feed = () => {
   const { orders, loading, error } = useAppSelector((state) => state.feed);
 
   useEffect(() => {
-    dispatch(fetchFeeds());
-  }, [dispatch]);
+    // Загружаем данные только если их нет
+    if (orders.length === 0) {
+      dispatch(fetchFeeds());
+    }
+  }, [dispatch, orders.length]);
 
   if (loading) {
     return <Preloader />;
@@ -18,7 +21,10 @@ export const Feed = () => {
 
   if (error) {
     return (
-      <div className='text text_type_main-medium pt-10' style={{ color: 'red' }}>
+      <div
+        className='text text_type_main-medium pt-10'
+        style={{ color: 'red' }}
+      >
         {error}
       </div>
     );

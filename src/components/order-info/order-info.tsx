@@ -1,16 +1,46 @@
-import { FC, useMemo } from 'react';
+import { FC, useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Preloader } from '../ui/preloader';
 import { OrderInfoUI } from '../ui/order-info';
-import { TIngredient } from '@utils-types';
+import { TIngredient, TOrder } from '@utils-types';
 import { useAppSelector } from '../../services/store';
+import { getOrderByNumberApi } from '../../utils/burger-api';
 
 export const OrderInfo: FC = () => {
   const { number } = useParams<{ number: string }>();
   const ingredients = useAppSelector((state) => state.ingredients.items);
-  const orders = useAppSelector((state) => state.feed.orders);
-  
-  const orderData = orders.find((item) => item.number === Number(number));
+  const feedOrders = useAppSelector((state) => state.feed.orders);
+  const userOrders = useAppSelector((state) => state.order.userOrders);
+
+  const [orderData, setOrderData] = useState<TOrder | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const num = Number(number);
+    if (isNaN(num)) return;
+
+    // Ищем заказ в уже загруженных
+    const found = [...feedOrders, ...userOrders].find(
+      (item) => item.number === num
+    );
+    if (found) {
+      setOrderData(found);
+      return;
+    }
+
+    // Если не нашли, загружаем с сервера
+    setLoading(true);
+    getOrderByNumberApi(num)
+      .then((data) => {
+        if (data.orders?.length) {
+          setOrderData(data.orders[0]);
+        }
+      })
+      .catch((err) => {
+        console.error('Ошибка загрузки заказа:', err);
+      })
+      .finally(() => setLoading(false));
+  }, [number, feedOrders, userOrders]);
 
   const orderInfo = useMemo(() => {
     if (!orderData || !ingredients.length) return null;
@@ -34,7 +64,6 @@ export const OrderInfo: FC = () => {
         } else {
           acc[item].count++;
         }
-
         return acc;
       },
       {}
@@ -53,7 +82,7 @@ export const OrderInfo: FC = () => {
     };
   }, [orderData, ingredients]);
 
-  if (!orderInfo) {
+  if (loading || !orderInfo) {
     return <Preloader />;
   }
 
