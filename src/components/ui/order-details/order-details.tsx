@@ -7,8 +7,8 @@ export const OrderDetailsUI: React.FC<OrderDetailsUIProps> = ({
   orderNumber
 }) => (
   <>
-    <h2 
-      data-cy="order-number"
+    <h2
+      data-cy='order-number'
       className={`${styles.title} text text_type_digits-large mt-2 mb-4`}
     >
       {orderNumber}

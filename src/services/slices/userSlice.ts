@@ -93,7 +93,7 @@ const userSlice = createSlice({
         state.loading = false;
         state.error = action.error.message || 'Ошибка регистрации';
       })
-      
+
       // Вход
       .addCase(loginUser.pending, (state) => {
         state.loading = true;
@@ -108,12 +108,12 @@ const userSlice = createSlice({
         state.loading = false;
         state.error = action.error.message || 'Ошибка входа';
       })
-      
+
       // Выход
       .addCase(logoutUser.fulfilled, (state) => {
         state.user = null;
       })
-      
+
       // Получение пользователя
       .addCase(getUser.pending, (state) => {
         state.loading = true;
@@ -130,7 +130,7 @@ const userSlice = createSlice({
         state.isAuthChecked = true;
         state.error = action.error.message || 'Ошибка получения пользователя';
       })
-      
+
       // Обновление пользователя
       .addCase(updateUser.pending, (state) => {
         state.loading = true;

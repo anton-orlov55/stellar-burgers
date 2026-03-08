@@ -9,7 +9,7 @@ export const OrderInfo: FC = () => {
   const { number } = useParams<{ number: string }>();
   const ingredients = useAppSelector((state) => state.ingredients.items);
   const orders = useAppSelector((state) => state.feed.orders);
-  
+
   const orderData = orders.find((item) => item.number === Number(number));
 
   const orderInfo = useMemo(() => {

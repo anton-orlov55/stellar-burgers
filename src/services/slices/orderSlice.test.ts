@@ -6,7 +6,6 @@ import orderReducer, {
 } from './orderSlice';
 import { TOrder } from '../../utils/types';
 
-
 jest.mock('../../utils/burger-api', () => ({
   getOrdersApi: jest.fn(),
   orderBurgerApi: jest.fn()

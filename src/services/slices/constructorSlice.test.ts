@@ -7,7 +7,6 @@ import constructorReducer, {
 } from './constructorSlice';
 import { TConstructorIngredient } from '../../utils/types';
 
-
 jest.mock('uuid', () => ({
   v4: () => 'fixed-uuid-id'
 }));
@@ -20,7 +19,7 @@ describe('constructorSlice', () => {
 
   const mockBun: TConstructorIngredient = {
     _id: 'bun1',
-    id: 'fixed-uuid-id', 
+    id: 'fixed-uuid-id',
     name: 'Булка',
     type: 'bun',
     price: 100,
@@ -51,8 +50,7 @@ describe('constructorSlice', () => {
   it('должен добавлять булку', () => {
     const action = addIngredient(mockBun);
     const state = constructorReducer(initialState, action);
-    
-    
+
     expect(state.bun).toBeDefined();
     expect(state.bun?._id).toBe('bun1');
     expect(state.bun?.id).toBe('fixed-uuid-id');
@@ -61,7 +59,7 @@ describe('constructorSlice', () => {
   it('должен добавлять ингредиент', () => {
     const action = addIngredient(mockIngredient);
     const state = constructorReducer(initialState, action);
-    
+
     expect(state.ingredients).toHaveLength(1);
     expect(state.ingredients[0]._id).toBe('ing1');
     expect(state.ingredients[0].id).toBe('fixed-uuid-id');

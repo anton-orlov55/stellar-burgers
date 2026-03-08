@@ -1,5 +1,11 @@
 import { useEffect } from 'react';
-import { Routes, Route, useLocation, useNavigate, BrowserRouter } from 'react-router-dom';
+import {
+  Routes,
+  Route,
+  useLocation,
+  useNavigate,
+  BrowserRouter
+} from 'react-router-dom';
 import {
   ConstructorPage,
   Feed,
@@ -45,7 +51,7 @@ const AppRoutes = () => {
       <Routes location={background || location}>
         <Route path='/' element={<ConstructorPage />} />
         <Route path='/feed' element={<Feed />} />
-        
+
         {/* Публичные маршруты (только для неавторизованных) */}
         <Route
           path='/login'
@@ -79,7 +85,7 @@ const AppRoutes = () => {
             </ProtectedRoute>
           }
         />
-        
+
         {/* Защищенные маршруты (только для авторизованных) */}
         <Route
           path='/profile'
@@ -97,7 +103,7 @@ const AppRoutes = () => {
             </ProtectedRoute>
           }
         />
-        
+
         {/* Детальные страницы */}
         <Route path='/ingredients/:id' element={<IngredientDetails />} />
         <Route path='/feed/:number' element={<OrderInfo />} />

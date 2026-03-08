@@ -38,10 +38,13 @@ const ingredientsSlice = createSlice({
         state.error = null;
       })
       // fulfilled — запрос выполнен успешно
-      .addCase(fetchIngredients.fulfilled, (state, action: PayloadAction<TIngredient[]>) => {
-        state.loading = false;
-        state.items = action.payload;
-      })
+      .addCase(
+        fetchIngredients.fulfilled,
+        (state, action: PayloadAction<TIngredient[]>) => {
+          state.loading = false;
+          state.items = action.payload;
+        }
+      )
       // rejected — ошибка
       .addCase(fetchIngredients.rejected, (state, action) => {
         state.loading = false;

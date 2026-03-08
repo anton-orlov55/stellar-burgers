@@ -1,7 +1,4 @@
-import feedReducer, {
-  fetchFeeds,
-  FeedState
-} from './feedSlice';
+import feedReducer, { fetchFeeds, FeedState } from './feedSlice';
 import { TOrder } from '../../utils/types';
 
 describe('feedSlice', () => {

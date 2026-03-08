@@ -18,7 +18,10 @@ export const Feed = () => {
 
   if (error) {
     return (
-      <div className='text text_type_main-medium pt-10' style={{ color: 'red' }}>
+      <div
+        className='text text_type_main-medium pt-10'
+        style={{ color: 'red' }}
+      >
         {error}
       </div>
     );
