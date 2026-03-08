@@ -2,36 +2,15 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { TConstructorIngredient, TIngredient } from '../../utils/types';
 import { v4 as uuidv4 } from 'uuid';
 
-const loadState = () => {
-  try {
-    const serializedState = localStorage.getItem('constructor');
-    if (serializedState === null) {
-      return { bun: null, ingredients: [] };
-    }
-    return JSON.parse(serializedState);
-  } catch (err) {
-    return { bun: null, ingredients: [] };
-  }
-};
-
-const saveState = (state: {
-  bun: TConstructorIngredient | null;
-  ingredients: TConstructorIngredient[];
-}) => {
-  try {
-    const serializedState = JSON.stringify(state);
-    localStorage.setItem('constructor', serializedState);
-  } catch (err) {
-    console.error('Ошибка сохранения:', err);
-  }
-};
-
 export interface ConstructorState {
   bun: TConstructorIngredient | null;
   ingredients: TConstructorIngredient[];
 }
 
-const initialState: ConstructorState = loadState();
+const initialState: ConstructorState = {
+  bun: null,
+  ingredients: []
+};
 
 const constructorSlice = createSlice({
   name: 'burgerConstructor',
@@ -44,7 +23,6 @@ const constructorSlice = createSlice({
         } else {
           state.ingredients.push(action.payload);
         }
-        saveState(state);
       },
       prepare: (ingredient: TIngredient) => ({
         payload: { ...ingredient, id: uuidv4() }
@@ -54,7 +32,6 @@ const constructorSlice = createSlice({
       state.ingredients = state.ingredients.filter(
         (item) => item.id !== action.payload
       );
-      saveState(state);
     },
     moveIngredient: (
       state,
@@ -64,12 +41,10 @@ const constructorSlice = createSlice({
       const ingredients = [...state.ingredients];
       ingredients.splice(to, 0, ingredients.splice(from, 1)[0]);
       state.ingredients = ingredients;
-      saveState(state);
     },
     clearConstructor: (state) => {
       state.bun = null;
       state.ingredients = [];
-      localStorage.removeItem('constructor');
     }
   }
 });

@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { getFeedsApi } from '../../utils/burger-api';
 import { TOrder } from '../../utils/types';
 
@@ -20,6 +20,7 @@ const initialState: FeedState = {
 
 export const fetchFeeds = createAsyncThunk('feed/fetchFeeds', async () => {
   const response = await getFeedsApi();
+  console.log('API response:', response);
   return response;
 });
 

@@ -7,11 +7,9 @@ import { useAppDispatch, useAppSelector } from '../../services/store';
 
 export const ConstructorPage = () => {
   const dispatch = useAppDispatch();
-  const {
-    items: ingredients,
-    loading,
-    error
-  } = useAppSelector((state) => state.ingredients);
+  const { items: ingredients, loading, error } = useAppSelector(
+    (state) => state.ingredients
+  );
 
   useEffect(() => {
     dispatch(fetchIngredients());
@@ -23,10 +21,7 @@ export const ConstructorPage = () => {
 
   if (error) {
     return (
-      <div
-        className='text text_type_main-medium pt-10'
-        style={{ color: 'red' }}
-      >
+      <div className='text text_type_main-medium pt-10' style={{ color: 'red' }}>
         {error}
       </div>
     );
@@ -34,7 +29,9 @@ export const ConstructorPage = () => {
 
   if (!ingredients.length) {
     return (
-      <div className='text text_type_main-medium pt-10'>Нет ингредиентов</div>
+      <div className='text text_type_main-medium pt-10'>
+        Нет ингредиентов
+      </div>
     );
   }
 

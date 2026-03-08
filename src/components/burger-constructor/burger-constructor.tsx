@@ -12,9 +12,7 @@ export const BurgerConstructor: FC = () => {
   const { bun, ingredients } = useAppSelector(
     (state) => state.burgerConstructor
   );
-  const { orderRequest, orderModalData } = useAppSelector(
-    (state) => state.order
-  );
+  const { orderRequest, orderModalData } = useAppSelector((state) => state.order);
   const user = useAppSelector((state) => state.user.user);
 
   const constructorItems = {
@@ -24,13 +22,17 @@ export const BurgerConstructor: FC = () => {
 
   const onOrderClick = () => {
     if (!bun || orderRequest) return;
-
+    
     if (!user) {
       navigate('/login');
       return;
     }
 
-    const orderData = [bun._id, ...ingredients.map((item) => item._id)];
+    const orderData = [
+      bun._id,
+      ...ingredients.map((item) => item._id)
+    ];
+    
     dispatch(orderBurger(orderData));
   };
 

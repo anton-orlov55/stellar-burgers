@@ -1,11 +1,5 @@
 import { useEffect } from 'react';
-import {
-  Routes,
-  Route,
-  useLocation,
-  useNavigate,
-  BrowserRouter
-} from 'react-router-dom';
+import { Routes, Route, useLocation, useNavigate, BrowserRouter } from 'react-router-dom';
 import {
   ConstructorPage,
   Feed,
@@ -18,17 +12,16 @@ import {
   NotFound404
 } from '@pages';
 import { AppHeader, Modal, IngredientDetails, OrderInfo } from '@components';
-import { OrderDetailsUI } from '@ui';
 import { ProtectedRoute } from '../protected-route';
 import { useAppDispatch, useAppSelector } from '../../services/store';
 import { getUser, authCheck } from '../../services/slices/userSlice';
 import { Preloader } from '@ui';
 import styles from './app.module.css';
 
+// Отдельный компонент для маршрутов с модалками
 const AppRoutes = () => {
   const dispatch = useAppDispatch();
   const { isAuthChecked } = useAppSelector((state) => state.user);
-  const { orderModalData } = useAppSelector((state) => state.order);
   const location = useLocation();
   const navigate = useNavigate();
   const background = location.state?.background;
@@ -52,6 +45,8 @@ const AppRoutes = () => {
       <Routes location={background || location}>
         <Route path='/' element={<ConstructorPage />} />
         <Route path='/feed' element={<Feed />} />
+        
+        {/* Публичные маршруты (только для неавторизованных) */}
         <Route
           path='/login'
           element={
@@ -84,6 +79,8 @@ const AppRoutes = () => {
             </ProtectedRoute>
           }
         />
+        
+        {/* Защищенные маршруты (только для авторизованных) */}
         <Route
           path='/profile'
           element={
@@ -100,6 +97,8 @@ const AppRoutes = () => {
             </ProtectedRoute>
           }
         />
+        
+        {/* Детальные страницы */}
         <Route path='/ingredients/:id' element={<IngredientDetails />} />
         <Route path='/feed/:number' element={<OrderInfo />} />
         <Route
@@ -113,6 +112,7 @@ const AppRoutes = () => {
         <Route path='*' element={<NotFound404 />} />
       </Routes>
 
+      {/* Модальные окна поверх */}
       {background && (
         <Routes>
           <Route
@@ -134,23 +134,12 @@ const AppRoutes = () => {
           <Route
             path='/profile/orders/:number'
             element={
-              <ProtectedRoute>
-                <Modal title='Детали заказа' onClose={handleModalClose}>
-                  <OrderInfo />
-                </Modal>
-              </ProtectedRoute>
+              <Modal title='Детали заказа' onClose={handleModalClose}>
+                <OrderInfo />
+              </Modal>
             }
           />
         </Routes>
-      )}
-
-      {orderModalData && (
-        <Modal
-          title='Заказ оформлен'
-          onClose={() => dispatch({ type: 'order/closeOrderModal' })}
-        >
-          <OrderDetailsUI orderNumber={orderModalData.number} />
-        </Modal>
       )}
     </>
   );
