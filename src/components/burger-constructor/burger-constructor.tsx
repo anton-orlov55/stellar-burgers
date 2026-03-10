@@ -36,6 +36,7 @@ export const BurgerConstructor: FC = () => {
   };
 
   const closeOrderModalHandler = () => {
+    console.log('Закрываем модалку и очищаем конструктор');
     dispatch(closeOrderModal());
     dispatch(clearConstructor());
   };

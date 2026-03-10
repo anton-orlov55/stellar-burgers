@@ -43,8 +43,10 @@ const constructorSlice = createSlice({
       state.ingredients = ingredients;
     },
     clearConstructor: (state) => {
+      console.log('clearConstructor вызван');
       state.bun = null;
       state.ingredients = [];
+      localStorage.removeItem('constructor');
     }
   }
 });
