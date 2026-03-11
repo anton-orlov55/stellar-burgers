@@ -13,6 +13,7 @@ export const OrderCard: FC<OrderCardProps> = memo(({ order }) => {
   const ingredients = useAppSelector((state) => state.ingredients.items);
 
   const orderInfo = useMemo(() => {
+    console.log('orderInfo:', orderInfo);
     if (!ingredients.length) return null;
 
     const ingredientsInfo = order.ingredients.reduce(
@@ -25,13 +26,15 @@ export const OrderCard: FC<OrderCardProps> = memo(({ order }) => {
     );
 
     const total = ingredientsInfo.reduce((acc, item) => acc + item.price, 0);
+
     const ingredientsToShow = ingredientsInfo.slice(0, maxIngredients);
+
     const remains =
       ingredientsInfo.length > maxIngredients
         ? ingredientsInfo.length - maxIngredients
         : 0;
-    const date = new Date(order.createdAt);
 
+    const date = new Date(order.createdAt);
     return {
       ...order,
       ingredientsInfo,

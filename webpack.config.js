@@ -86,10 +86,13 @@ module.exports = {
     filename: 'bundle.js'
   },
   devServer: {
-    static: path.join(__dirname, './dist'),
-    compress: true,
-    historyApiFallback: true,
-    port: 4000,
-    open: true
+  static: path.join(__dirname, './dist'),
+  compress: true,
+  historyApiFallback: true,
+  port: 4000,
+  open: true,
+  client: {
+    overlay: false // Это отключает оверлей
   }
+ }
 };

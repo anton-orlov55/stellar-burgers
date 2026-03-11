@@ -9,11 +9,8 @@ export const Feed = () => {
   const { orders, loading, error } = useAppSelector((state) => state.feed);
 
   useEffect(() => {
-    // Загружаем данные только если их нет
-    if (orders.length === 0) {
-      dispatch(fetchFeeds());
-    }
-  }, [dispatch, orders.length]);
+    dispatch(fetchFeeds());
+  }, [dispatch]);
 
   if (loading) {
     return <Preloader />;
